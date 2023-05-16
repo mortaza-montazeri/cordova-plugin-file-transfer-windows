@@ -282,7 +282,7 @@ FileTransfer.prototype.download = function (source, target, successCallback, err
 
         var req = e.target;
         // req.status === 0 is special case for local files with file:// URI scheme
-        if ((req.status === 200 || req.status === 0) && req.response) {
+        if ((req.status === 200 || req.status === 206 || req.status === 0) && req.response) {
             window.resolveLocalFileSystemURL(
                 getParentPath(target),
                 function (dir) {
