@@ -244,6 +244,7 @@ FileTransfer.prototype.download = function (source, target, successCallback, err
 
     var headers = options.headers || {};
     var withCredentials = options.withCredentials || false;
+    var contentType = options.contentType || false;
 
     var basicAuthHeader = getBasicAuthHeader(source);
     if (basicAuthHeader) {
@@ -305,7 +306,9 @@ FileTransfer.prototype.download = function (source, target, successCallback, err
                                 fileWriter.onerror = function () {
                                     fail(FileTransferError.FILE_NOT_FOUND_ERR);
                                 };
-                                fileWriter.write(req.response);
+                                let blob = req.response;
+                                if (contentType) blob = blob.slice(0, blob.size, contentType);
+                                fileWriter.write(blob);
                             }, fileNotFound);
                         },
                         fileNotFound
